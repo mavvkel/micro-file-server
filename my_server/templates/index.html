@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <ul id="navigation">
+    {% for item in context %}
+        <li><a href="{{ item.href }}">{{ item }}</a></li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}

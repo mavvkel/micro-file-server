@@ -1,0 +1,6 @@
+{
+    "venvPath": "." ,
+    "venv": "venv",
+    "pythonPlatform": "Windows",
+    "pythonVersion": "3.11.2"
+}

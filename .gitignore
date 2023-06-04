@@ -1,0 +1,5 @@
+venv/
+lab3_final/
+my_server/__pycache__/
+
+lab3_final.tar.gz
