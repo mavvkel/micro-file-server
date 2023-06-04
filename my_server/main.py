@@ -1,14 +1,17 @@
 from flask import Blueprint, render_template
+from flask_login import login_required, current_user
 from . import db
 import os
 
 main = Blueprint('main', __name__)
 
 @main.route('/', methods=['GET'])
+@login_required
 def index():
     file_list = os.listdir('data') 
     return render_template(template_name_or_list='index.html',
-                           context=file_list)
+                           files=file_list,
+                           name=current_user.name)
 
 #
 #@app.route('/files', methods=['GET'])

@@ -2,10 +2,15 @@
 
 {% block content %}
 
+<div class="box has-text-centered">
+    <h1 class="is0" >Hi {{ name }}! </h1>
+</div>
+<div class="box has-text-centered">
     <ul id="navigation">
-    {% for item in context %}
+    {% for item in files %}
         <li><a href="{{ item.href }}">{{ item }}</a></li>
     {% endfor %}
     </ul>
+</div>
 
 {% endblock %}
