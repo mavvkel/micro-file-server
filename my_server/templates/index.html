@@ -8,7 +8,7 @@
 <div class="box has-text-centered">
     <ul id="navigation">
     {% for item in files %}
-        <li><a href="{{ item.href }}">{{ item }}</a></li>
+        <li><a href="{{ url_for('main.download', filename=item) }}">{{ item }}</a></li>
     {% endfor %}
     </ul>
 </div>

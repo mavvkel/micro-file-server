@@ -1,6 +1,5 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, current_app, redirect, render_template, send_from_directory, url_for
 from flask_login import login_required, current_user
-from . import db
 import os
 
 main = Blueprint('main', __name__)
@@ -8,10 +7,21 @@ main = Blueprint('main', __name__)
 @main.route('/', methods=['GET'])
 @login_required
 def index():
-    file_list = os.listdir('data') 
+    files_loc = os.path.join(current_app.root_path, "data")
+    file_list = os.listdir(files_loc) 
     return render_template(template_name_or_list='index.html',
                            files=file_list,
                            name=current_user.name)
+
+@main.route('/download/<path:filename>')
+@login_required
+def download(filename):
+    print(current_app.root_path)
+    # if 404 then flash msg
+    return send_from_directory(directory=current_app.config['UPLOAD_FOLDER'],
+                               path=filename,
+                               as_attachment=True)
+    #return redirect(url_for('main.index'))
 
 #
 #@app.route('/files', methods=['GET'])
