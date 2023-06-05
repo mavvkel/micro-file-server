@@ -55,5 +55,5 @@ def download(filename):
 
     #path = filename.rep
     return send_from_directory(directory=current_app.config['UPLOAD_FOLDER'],
-                               path=filename[1::],
+                               path=filename,
                                as_attachment=True)
