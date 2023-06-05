@@ -1,5 +1,7 @@
 from flask import Blueprint, current_app, redirect, render_template, send_from_directory, url_for
 from flask_login import login_required, current_user
+from pathlib import Path
+from glob import glob
 import os
 
 main = Blueprint('main', __name__)
@@ -8,47 +10,35 @@ main = Blueprint('main', __name__)
 @login_required
 def index():
     files_loc = os.path.join(current_app.root_path, "data")
-    file_list = os.listdir(files_loc) 
+
+    #file_list = [os.path.join(dp, f) for dp, dn, filenames in os.walk(PATH) for f in filenames if os.path.splitext(f)[1] == '.txt']
+
+    #file_list = list(Path(files_loc).rglob("*"))
+
+    rel_file_list = glob(pathname="./**",
+                         root_dir=files_loc,
+                         recursive=True)
+    abs_file_list = glob(pathname="./my_server/data/**",
+                         recursive=True)
+    files = []
+
+    for i in range(len(abs_file_list)):
+        if not os.path.isdir(abs_file_list[i]):
+            files.append(rel_file_list[i][1::])
+
     return render_template(template_name_or_list='index.html',
-                           files=file_list,
+                           files=files,
                            name=current_user.name)
 
 @main.route('/download/<path:filename>')
 @login_required
 def download(filename):
-    print(current_app.root_path)
+    # print(current_app.root_path)
     # if 404 then flash msg
+    print(filename)
+    filename = filename.replace('\\', '/')
+
+    #path = filename.rep
     return send_from_directory(directory=current_app.config['UPLOAD_FOLDER'],
-                               path=filename,
+                               path=filename[1::],
                                as_attachment=True)
-    #return redirect(url_for('main.index'))
-
-#
-#@app.route('/files', methods=['GET'])
-#def getFiles():
-#	return os.listdir('/tmp/d/')
-#
-#@app.route('/download/<path:name>')
-#def downloadFile(name):
-#	return send_from_directory('/tmp/d/',name)
-#
-#@app.route('/upload')
-#def uploadFile(name):
-#	if loggedIn:
-#		f = request.files['file']
-#		f.save('/tmp/d'+f.filename);
-#		return 'File uploaded'
-#	else:
-#		return 'Login first'
-#
-#@app.route('/login/<username>/<password>', methods=['POST'])
-#def login(username, password):
-#	if(username == 'admin' and password == 'admin'):
-#		loggedIn = True
-#		return 'Login Success'
-#	else:
-#		return 'Bad credentials!'
-#
-
-# if __name__ == '__main__':
-#     app.run(debug=True, host="0.0.0.0")
